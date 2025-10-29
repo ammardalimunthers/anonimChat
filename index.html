@@ -25,11 +25,6 @@
       width: 90%;
       max-width: 400px;
       box-shadow: 0 0 20px rgba(255,255,255,0.2);
-      animation: fadeIn 0.8s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
     }
     input, textarea {
       width: 100%;
@@ -38,7 +33,6 @@
       border: none;
       border-radius: 10px;
       font-size: 16px;
-      resize: none;
     }
     button {
       background: linear-gradient(to right, #ff3cac, #784ba0, #2b86c5);
@@ -54,41 +48,39 @@
     button:hover {
       transform: scale(1.05);
     }
-    #msg {
-      display: none;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #ffd5ec;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Kirim Pesan Anonim 💌</h2>
 
-    <!-- ✅ Ganti URL di bawah ini dengan URL formResponse kamu -->
-    <form action="https://docs.google.com/forms/d/e/1FAIpQLSe0JvJZCUf5AdT7KiwZFy5ri6AG9RKNMiFfC-Plsnc0s9tYfg/formResponse" 
-          method="POST" 
-          target="hidden_iframe" 
-          onsubmit="showMessage(); this.reset(); return false;">
-      
-      <!-- ✅ Entry ID sesuai form kamu -->
-      <input type="text" name="entry.661936881" placeholder="Nama Kamu (*Buat Simbol Jika Anonim)" required>
-      <textarea name="entry.917493230" rows="5" placeholder="Bagaimana Pendapatmu Tentang Saya?" required></textarea>
-      
-      <button type="submit">Kirim Pesan 🚀</button>
+    <!-- Ganti URL di bawah dengan URL formResponse kamu -->
+    <form id="anonForm">
+      <input type="text" name="entry.917493230" placeholder="Nama Kamu (*boleh simbol)" required>
+      <textarea name="entry.661936881" placeholder="Pendapatmu tentang saya..." required></textarea>
+      <button type="submit">Kirim 🚀</button>
     </form>
 
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
-    <p id="msg">Pesanmu telah terkirim 💖</p>
+    <p id="msg" style="display:none; margin-top:10px;">Pesanmu terkirim 💖</p>
   </div>
 
   <script>
-    function showMessage() {
-      const msg = document.getElementById('msg');
-      msg.style.display = 'block';
-      setTimeout(() => { msg.style.display = 'none'; }, 4000);
-    }
+    document.getElementById("anonForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(e.target);
+
+      // ⚠️ Ganti URL ini dengan URL formResponse kamu
+      const url = "https://docs.google.com/forms/d/e/1FAIpQLSe0JvJZCUf5AdT7KiwZFy5ri6AG9RKNMiFfC-Plsnc0s9tYfg/formResponse";
+
+      await fetch(url, {
+        method: "POST",
+        body: data,
+        mode: "no-cors"
+      });
+
+      document.getElementById("msg").style.display = "block";
+      e.target.reset();
+    });
   </script>
 </body>
 </html>
